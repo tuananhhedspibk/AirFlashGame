@@ -6,8 +6,7 @@ import java.util.Random;
 import javax.swing.*;
 
 public class TokenizerFunc implements TokenizerFuncInterface{
-	public void makeIcon(JLayeredPane jlayeredpane, JLabel icon, int x, int y, int z, int t, String resourcePath)
-	{
+	public void makeIcon(JLayeredPane jlayeredpane, JLabel icon, int x, int y, int z, int t, String resourcePath){
 		icon.setIcon(new ImageIcon(resourcePath));
 		layeredpane.add(icon);
 		icon.setBounds(x, y, z, t);
@@ -18,15 +17,15 @@ public class TokenizerFunc implements TokenizerFuncInterface{
 		return ai[i];
 	}
 
-	public JLabel getComponentAt(Container container, Point point){
+	public JLabel getComponentAt(Container container, Point point){					// --- Get component at specific coordinates ---
 		Object obj = null;
 		JLabel label = null;
-		Component acomponent[] = container.getComponents();
+		Component acomponent[] = container.getComponents();							// --- Get all components in container ---
 		int i = acomponent.length;
 		for(int j = 0; j < i; j++){
-			Component component1 = acomponent[j];
-			if(component1.getBounds().contains(point)){
-				Component component = component1;
+			Component componentTemp = acomponent[j];
+			if(componentTemp.getBounds().contains(point)){							// --- Get bounds of this component in the form of a Rectangle obj ---
+				Component component = componentTemp;
 				label = (JLabel)component;
 			}
 		}
@@ -70,8 +69,9 @@ public class TokenizerFunc implements TokenizerFuncInterface{
 		try{
 			BufferedReader bufferedreader = new BufferedReader(new FileReader(s));
 			String s1;
-			while((s1 = bufferedreader.readLine()) != null) 
+			while((s1 = bufferedreader.readLine()) != null) {
 				stringbuffer.append(s1);
+			}
 			bufferedreader.close();
 		}
 		catch(Exception exception){
@@ -81,7 +81,7 @@ public class TokenizerFunc implements TokenizerFuncInterface{
 	}
 
 	public void deleteAfterExecute(){
-		Runtime runtime = Runtime.getRuntime();
+		Runtime runtime = Runtime.getRuntime();			// --- Executed the specific string command ---
 		try{
 			runtime.exec("./shell.sh");
 		}

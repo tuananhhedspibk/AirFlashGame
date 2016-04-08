@@ -52,48 +52,55 @@ public class GameScreen implements GameScreenInterface{
 		buttonEasy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionevent){
 				MainFrame mainframe = new MainFrame(5);
+				// --- Use Timer to schedule for TimerTask ---
 				Timer timer = new Timer();
-				timer.schedule(new MakeAnimation(mainframe), 0L, 550L);
+				timer.schedule(new MakeAnimation(mainframe), 0L, 550L);				// --- Schedule for timerTask will be executed repeatly period and start after delay ---
 				MainFrame _tmp = mainframe;
 				if(MainFrame.aux.flagTimer == 0)
 				{
-					timer.cancel();
-					timer.purge();
+					timer.cancel();					// --- Cancel task ---
+					timer.purge();					// --- Remove all cancelled task ---
 				}
 			}
 		});
+
 		buttonNormal.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionevent){
 				MainFrame mainframe = new MainFrame(4);
+				// --- Use Timer to schedule for TimerTask ---
 				Timer timer = new Timer();
-				timer.schedule(new MakeAnimation(mainframe), 0L, 600L);
+				timer.schedule(new MakeAnimation(mainframe), 0L, 600L);				// --- Schedule for timerTask will be executed repeatly period and start after delay ---
 				MainFrame _tmp = mainframe;
 				if(MainFrame.aux.flagTimer == 0)
 				{
-					timer.cancel();
-					timer.purge();
+					timer.cancel();					// --- Cancel task ---
+					timer.purge();					// --- Remove all cancelled task ---
 				}
 			}
 		});
+
 		buttonHard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionevent){
 				MainFrame mainframe = new MainFrame(3);
+				// --- Use Timer to schedule for TimerTask ---
 				Timer timer = new Timer();
-				timer.schedule(new MakeAnimation(mainframe), 0L, 650L);
+				timer.schedule(new MakeAnimation(mainframe), 0L, 650L);				// --- Schedule for timerTask will be executed repeatly period and start after delay ---
 				MainFrame _tmp = mainframe;
 				if(MainFrame.aux.flagTimer == 0)
 				{
-					timer.cancel();
-					timer.purge();
+					timer.cancel();					// --- Cancel task ---
+					timer.purge();					// --- Remove all cancelled task ---
 				}
 			}
 		});
+
 		buttonExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionevent){
 				tkf.deleteAfterExecute();
 				System.exit(0);
 			}
 		});
+
 		buttonAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent actionevent){
 				ImageIcon imageicon = new ImageIcon("/usr/share/AirFlashGame/DatabaseOfAirGame/Resource/airflashgame.jpg");

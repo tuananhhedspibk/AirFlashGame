@@ -8,7 +8,7 @@ public class Auxiliary{
 	public int arrayColor[] = {
 		1, 2, 3, 4
 	};
-	public int flag;
+	public int flag;				// --- flag = 1 -> end game , flag = 0 -> game doesn't end ---
 	public int delay;
 	public int flagTimer;
 

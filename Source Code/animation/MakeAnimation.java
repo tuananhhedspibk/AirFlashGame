@@ -15,7 +15,7 @@ import java.util.TimerTask;
 import javax.swing.*;
 import tokenizerfunc.TokenizerFunc;
 
-public class MakeAnimation extends TimerTask{
+public class MakeAnimation extends TimerTask{				// --- A task that can be scheduled for one-time or repeated execution by a Timer ---
 	public MainFrame copyMainFrame;
 	public JFrame scoreFrame;
 
@@ -34,18 +34,18 @@ public class MakeAnimation extends TimerTask{
 	public MakeAnimation(final MainFrame mainFrame){
 		scoreFrame = new JFrame("STATISTICS");
 		panel = new JPanel();
-		updateTask = new ActionListener() {
+		updateTask = new ActionListener() {				// --- updateTask is Listener ---
 			public void actionPerformed(ActionEvent actionevent){
 				if(MainFrame.aux.flag == 0){
 					int i = 0;
-					for(int j = 0; j < 50; j++){
+					for(int j = 0; j < 50; j++){		// --- Check is end game ? ---
 						if(MainFrame.specialComponent.arrayLabel[j].color == 5){
 							i++;
 						}
 					}
 					if(i == 50){
-						MainFrame.aux.flag = 1;
-						makeScoreFrame();
+						MainFrame.aux.flag = 1;			// --- End game ---
+						makeScoreFrame();				// --- Display score and result ---
 					}
 				}
 				deletePackageAndChangeBulb();
@@ -55,18 +55,18 @@ public class MakeAnimation extends TimerTask{
 			}
 		};
 		
-		timer = new Timer(MainFrame.aux.delay, updateTask);
+		timer = new Timer(MainFrame.aux.delay, updateTask);			// --- After delay(ms) Timer obj will send event to listener (updateTask) ---
 		copyMainFrame = mainFrame;
 		
 		MainFrame.aux.flag = 0;
-		MainFrame.aux.flagTimer = 1;
+		MainFrame.aux.flagTimer = 1;								// --- flagTimer = 1 -> not end game, flagTimer = 0 -> end game ---
 		
-		SwingWorker swingworker = new SwingWorker() {
-			protected String doInBackground() throws Exception{
+		SwingWorker swingworker = new SwingWorker() {				// --- Perform lengthy GUI-interaction tasks in a background thread ---
+			protected String doInBackground() throws Exception{		// --- Computes a result, or throws an exception if unable to do so ---
 				for(int i = 0; i < 50; i++){
 					if(MainFrame.specialComponent.arrayLabel[i].color != 0){
-						if(MainFrame.specialComponent.arrayLabel[i].color != 5){
-							MainFrame.makePane.pane.remove(MainFrame.specialComponent.arrayLabel[i].label);
+						if(MainFrame.specialComponent.arrayLabel[i].color != 5){		// --- Color = 5 when component has been deleted ---
+							MainFrame.makePane.pane.remove(MainFrame.specialComponent.arrayLabel[i].label);		// --- Delete component if its color != 5 ---
 						}
 					}
 					MainFrame.specialComponent.arrayLabel[i] = new SpecialLabel();
@@ -74,7 +74,7 @@ public class MakeAnimation extends TimerTask{
 				return "";
 			}
 		};
-		swingworker.execute();
+		swingworker.execute();		// --- Schedules this SwingWorker for execution on a worker thread ---
 		
 		MainFrame.resultComponent.resultLabelRed.setText("x0");
 		MainFrame.resultComponent.resultLabelGreen.setText("x0");
@@ -94,9 +94,9 @@ public class MakeAnimation extends TimerTask{
 		Point point = new Point();
 		SwingWorker swingworker = new SwingWorker() {
 
-			protected String doInBackground() throws Exception{
+			protected String doInBackground() throws Exception{			// --- Usually used for calculate with complex operation ---
 				int l = Integer.parseInt(MainFrame.resultComponent.scoreField.getText());
-				l += 10;
+				l += 10;												// --- Update result for player ---
 				MainFrame.resultComponent.scoreField.setText((new StringBuilder()).append(l).append("").toString());
 				
 				return (new StringBuilder()).append(l).append("").toString();
@@ -104,19 +104,19 @@ public class MakeAnimation extends TimerTask{
 		};
 
 		for(int j = 0; j < 50; j++){
-			if(MainFrame.specialComponent.arrayLabel[j].color == 0){
+			if(MainFrame.specialComponent.arrayLabel[j].color == 0){			// --- If component is marked for uninitializing then coninue loop ---
 				continue;
 			}
-			if(MainFrame.specialComponent.arrayLabel[j].color == 5){
+			if(MainFrame.specialComponent.arrayLabel[j].color == 5){			// --- If component is marked for deleting then coninue loop ---
 				continue;
 			}
 			
-			Point point1 = MainFrame.specialComponent.arrayLabel[j].label.getLocation();
+			Point point1 = MainFrame.specialComponent.arrayLabel[j].label.getLocation();		// --- Point 1 store currently location of component ---
 			if((point1.getX() != 930 || point1.getY() != 380) && (point1.getX() != 970 || point1.getY() != 300) && (point1.getX() != 970 || point1.getY() != 110) && (point1.getX() != 930 || point1.getY() != 110) && (point1.getX() != 60 || point1.getY() != 60) && (point1.getX() != 230 || point1.getY() != 60)){
-				continue;
+				continue;				// --- If component hasn't been gone to destination, continue running ---
 			}
 			
-			Point point2;
+			Point point2;				// --- Destination point ---
 			if(point1.getX() == 60 && point1.getY() == 60){
 				point2 = new Point(60, 70);
 			}
@@ -133,7 +133,7 @@ public class MakeAnimation extends TimerTask{
 			JLabel component = MainFrame.tkf.getComponentAt(MainFrame.makePane.pane, point2);
 			int i = MainFrame.tkf.getBulbColorValue(component);
 
-			if(i == MainFrame.specialComponent.arrayLabel[j].color){
+			if(i == MainFrame.specialComponent.arrayLabel[j].color){		// --- If bulb has same color with component then update point for player ---
 				swingworker.execute();
 				if(i == 1){
 					MainFrame.resultComponent.resultLabel1.setText(MainFrame.tkf.setTextForResultLabel(MainFrame.resultComponent.resultLabel1));
@@ -150,19 +150,18 @@ public class MakeAnimation extends TimerTask{
 			}
 
 			int k;
-			do
-			{
-				k = MainFrame.tkf.getRandom(MainFrame.aux.arrayColor);
+			do{
+				k = MainFrame.tkf.getRandom(MainFrame.aux.arrayColor);			// --- Random color value for component ---
 			} 
 			while(k == i);	
 			setNewIconForBulb(jlabel, k);
 			MainFrame.makePane.pane.remove(MainFrame.specialComponent.arrayLabel[j].label);
-			MainFrame.specialComponent.arrayLabel[j].color = 5;
-			MainFrame.specialComponent.arrayLabel[j].flag = 0;
+			MainFrame.specialComponent.arrayLabel[j].color = 5;					// --- Mark for deleting component ---
+			MainFrame.specialComponent.arrayLabel[j].flag = 0;					// --- Mark for deleting component ---
 		}
 	}
 
-	public void setNewIconForBulb(JLabel bulb, int i){
+	public void setNewIconForBulb(JLabel bulb, int i){						// --- Basicly set icon for JLabel ---
 		if(i == 1){
 			bulb.setIcon(new ImageIcon("/usr/share/AirFlashGame/DatabaseOfAirGame/Resource/bulb1.png"));
 		}
@@ -177,14 +176,16 @@ public class MakeAnimation extends TimerTask{
 		}
 	}
 
-	public void getDirection(){
+	public void getDirection(){					// --- When component go to location of arrow, direction of motion of component will be reseted ---
 		Point point = new Point();
 		for(int i = 0; i < 50; i++)
 		{
-			if(MainFrame.specialComponent.arrayLabel[i].color == 0)
+			if(MainFrame.specialComponent.arrayLabel[i].color == 0){
 				continue;
-			if(MainFrame.specialComponent.arrayLabel[i].color == 5)
+			}
+			if(MainFrame.specialComponent.arrayLabel[i].color == 5){
 				continue;
+			}
 			Point point = MainFrame.specialComponent.arrayLabel[i].label.getLocation();
 			if((point.getX() != 230 || point.getY() != 300) && (point.getX() != 60 || point.getY() != 300) && (point.getX() != 60 || point.getY() != 110) && (point.getX() != 230 || point.getY() != 110) && (point.getX() != 480 || point.getY() != 110) && (point.getX() != 480 || point.getY() != 380) && (point.getX() != 780 || point.getY() != 380) && (point.getX() != 780 || point.getY() != 210) && (point.getX() != 780 || point.getY() != 110) && (point.getX() != 970 || point.getY() != 210)){
 				continue;
@@ -212,9 +213,10 @@ public class MakeAnimation extends TimerTask{
 	public void run(){
 		int i = 0;
 		do{
-			if(i >= 50){
+			if(i >= 50){			// --- Game has max only 50 container ---
 				break;
 			}
+			// --- Make new container ---
 			if(MainFrame.specialComponent.arrayLabel[i].color == 0){
 				MainFrame.specialComponent.arrayLabel[i].flag = MainFrame.tkf.getRandom(MainFrame.aux.arrayFlag);
 				MainFrame.specialComponent.arrayLabel[i].color = MainFrame.tkf.getRandom(MainFrame.aux.arrayColor);
@@ -231,8 +233,7 @@ public class MakeAnimation extends TimerTask{
 							MainFrame.tkf.makeIcon(MainFrame.makePane.pane, MainFrame.specialComponent.arrayLabel[i].label, MainFrame.specialComponent.arrayLabel[i].x, MainFrame.specialComponent.arrayLabel[i].y, 40, 32, "/usr/share/AirFlashGame/DatabaseOfAirGame/Resource/box3.png");
 						} 
 						else{
-							if(MainFrame.specialComponent.arrayLabel[i].color == 4)
-							{
+							if(MainFrame.specialComponent.arrayLabel[i].color == 4){
 								MainFrame.tkf.makeIcon(MainFrame.makePane.pane, MainFrame.specialComponent.arrayLabel[i].label, MainFrame.specialComponent.arrayLabel[i].x, MainFrame.specialComponent.arrayLabel[i].y, 40, 32, "/usr/share/AirFlashGame/DatabaseOfAirGame/Resource/box4.png");
 							}
 						}
@@ -243,10 +244,10 @@ public class MakeAnimation extends TimerTask{
 			}
 			i++;
 		} while(true);
-		timer.start();
+		timer.start();		// --- Check end game ? ---
 	}
 
-	public void update(){
+	public void update(){			// --- Make component can move ---
 		try{
 			for(int i = 0; i < 50; i++){
 				if(MainFrame.specialComponent.arrayLabel[i].flag == 1){
